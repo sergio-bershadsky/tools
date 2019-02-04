@@ -44,7 +44,7 @@ def release(path, version_file):
     if current_version in tags:
         click.confirm(f"Current tag ({current_version}) exists, proceed?", abort=True)
 
-    repository.git.tag(current_version)
+    repository.git.tag("-f", current_version)
 
 
 @git_group.command()
