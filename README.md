@@ -13,7 +13,7 @@ Here are presented handy commands I use everyday.
  
 # Tool set
 
-`b8y git changelog` - Generated changelog grouped by date, version tag with comment comment lists.
+`b8y git changelog` - Generates changelog grouped by date, version tag with comment comment lists.
 
 `b8y git release` - Creates release tag and push it to repository according to version file
 

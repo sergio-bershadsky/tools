@@ -8,7 +8,9 @@ from bershadsky_tools import options
 
 
 __all__ = [
+    "version_group",
     "semver_command",
+    "current",
 ]
 
 

@@ -3,5 +3,6 @@ click-repl
 click-spinner
 click-log
 gitpython
+massedit
 semver
 sh

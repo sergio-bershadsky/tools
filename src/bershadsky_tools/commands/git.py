@@ -36,7 +36,7 @@ def release(path, version_file):
 
     if repository.is_dirty():
         click.confirm("Repository is not committed, proceed?")
-        commit_message = click.prompt("Commiting, please enter commit message")
+        commit_message = click.prompt("Committing, please enter commit message")
         repository.git.commit("-a", "-m", commit_message)
 
     tags = {i.name for i in sorted(repository.tags, key=lambda i: i.commit.authored_date)}

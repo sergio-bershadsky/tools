@@ -18,6 +18,7 @@ setup(
         'click-spinner',
         'click-log',
         'gitpython',
+        'massedit',
         'semver',
         'sh',
     ],
