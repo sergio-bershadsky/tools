@@ -35,7 +35,7 @@ def release(path, version_file):
     repository = Repo(path)
 
     if repository.is_dirty():
-        click.confirm("Repository is not committed, proceed?")
+        click.confirm("Repository is not committed, proceed?", abort=True)
         commit_message = click.prompt("Committing, please enter commit message")
         repository.git.commit("-a", "-m", commit_message)
 
@@ -44,7 +44,10 @@ def release(path, version_file):
     if current_version in tags:
         click.confirm(f"Current tag ({current_version}) exists, proceed?", abort=True)
 
+    click.confirm(f"You are about to release ({current_version}) tag, proceed?", abort=True)
+
     repository.git.tag("-f", current_version)
+    repository.git.push("--tags")
 
 
 @git_group.command()
