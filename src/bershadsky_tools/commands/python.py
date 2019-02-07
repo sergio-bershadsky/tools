@@ -1,12 +1,11 @@
+import sh
+import os
+import uuid
+import click
 import datetime
 import functools
-import os
 import threading
-import uuid
-
-import click
 import click_spinner
-import sh
 
 from bershadsky_tools.commands.base import b8y
 from bershadsky_tools import options
@@ -84,9 +83,7 @@ def freeze(path, backup_dir, requirements_file, requirements_frozen_file, base_i
             "install", "-r", "/tmp/requirements.pip",
             _out=log.append
         )
-
         sh.docker.commit(unique, unique)
-
         sh.docker.run(
             "--rm",
             "--entrypoint", "pip",
