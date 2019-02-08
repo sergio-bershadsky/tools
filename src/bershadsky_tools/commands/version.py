@@ -67,8 +67,9 @@ def semver_command(bump, prerelease_name, version_file, version_initial, **optio
 
 
 @version_group.command()
+@options.project_path()
 @options.version_file()
-def current(version_file, quiet=False):
+def current(path, version_file, quiet=False):
     result = None
     if not os.path.exists(version_file):
         quiet or click.echo(f"Unknown ({version_file} file does not exist)")

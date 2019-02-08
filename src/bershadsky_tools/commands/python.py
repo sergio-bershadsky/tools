@@ -1,3 +1,7 @@
+import difflib
+import re
+
+import massedit
 import sh
 import os
 import uuid
@@ -7,6 +11,7 @@ import functools
 import threading
 import click_spinner
 
+from bershadsky_tools.commands import version
 from bershadsky_tools.commands.base import b8y
 from bershadsky_tools import options
 
@@ -108,14 +113,3 @@ def freeze(path, backup_dir, requirements_file, requirements_frozen_file, base_i
             f.write(result)
     else:
         click.echo("Nothing to freeze")
-
-
-@python.command("tweak-version")
-def tweak_version():
-    """
-    Replace version in python project where it should be replaced
-
-    TBD
-
-    """
-    pass
