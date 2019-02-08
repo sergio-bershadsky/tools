@@ -58,7 +58,8 @@ def push_tags(path):
 
 @git_group.command()
 @options.project_path()
-def changelog(path):
+@click.option("--print", is_flag=True, default=False)
+def changelog(path, print):
     """
     Generated changelog grouping by date, version tag and lists comments
     """
@@ -85,9 +86,13 @@ def changelog(path):
             add(f"**{current_tag} - {committed.strftime('%Y-%m-%d')}**")
             prev_tag = current_tag
 
-        add(f"- {commit.author}: {commit.summary}")
+        message = commit.message.strip().replace("\n", " ").replace("  ", " ")
+        add(f"- {commit.author}: {message}")
 
     result = '\n'.join(result)
 
-    with open("CHANGELOG.md", "w+") as h:
-        h.write(result)
+    if print:
+        click.echo(result)
+    else:
+        with open("CHANGELOG.md", "w+") as h:
+            h.write(result)
