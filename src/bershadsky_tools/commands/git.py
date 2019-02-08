@@ -6,6 +6,7 @@ import click
 from sh import git
 from git import Repo
 
+from bershadsky_tools.commands import version
 from bershadsky_tools.commands.base import b8y
 from bershadsky_tools import options, utils
 
@@ -72,13 +73,13 @@ def changelog(path):
     for tag in repository.tags:
         tags.setdefault(tag.commit, str(tag))
 
-    prev_tag = ""
+    prev_tag = click.get_current_context().invoke(version.current, path=path, quiet=True)
     result = ["# Change log"]
 
     add = lambda s: result.append(s)
     for commit in repository.iter_commits():
         committed = datetime.datetime.fromtimestamp(commit.committed_date, datetime.timezone.utc)
-        current_tag = tags.get(commit) or ""
+        current_tag = tags.get(commit) or prev_tag
         if current_tag != prev_tag:
             add("") if result else None
             add(f"** [{current_tag}] {committed.strftime('%Y-%m-%d')} **")

@@ -1,4 +1,5 @@
 # Change log
+- Sergey Bershadsky: ADD: git changelog command
 
 ** [0.1.2] 2019-02-08 **
 - Sergey Bershadsky: FIX: versioning model
