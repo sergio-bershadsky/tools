@@ -33,5 +33,5 @@ def b8y():
 def update():
     sh.pip.install(
         "git+https://github.com/sergio-bershadsky/tools.git",
-        _out=utils.sh_out
+        _out=utils.out
     )

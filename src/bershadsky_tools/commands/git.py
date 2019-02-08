@@ -1,10 +1,10 @@
-import functools
+import datetime
 import os
 import re
 import click
 
-from git import Repo
 from sh import git
+from git import Repo
 
 from bershadsky_tools.commands.base import b8y
 from bershadsky_tools import options, utils
@@ -47,6 +47,12 @@ def release(path, version_file):
     click.confirm(f"You are about to release ({current_version}) tag, proceed?", abort=True)
 
     repository.git.tag("-f", current_version)
+
+
+@git_group.command()
+@options.project_path()
+def push_tags(path):
+    repository = Repo(path)
     repository.git.push("--tags")
 
 
@@ -57,55 +63,29 @@ def changelog(path):
     Generated changelog grouping by date, version tag and lists comments
     """
 
-    if not os.path.exists(os.path.join(path, '.git')):
+    if not os.path.exists(os.path.join(os.getcwd(), '.git')):
         raise click.BadParameter("Not a git repository. Impossible to create changelog file")
 
-    tag_dates = git.log('--no-walk', '--tags', '--date=short', '--pretty="%d %ai"')\
-        .replace('"', '')\
-        .split('\n')
+    repository = Repo(path)
+    tags = {}
 
-    # unique & not empty
-    uniques_tag_dates = [
-        # extract tagname & fulldate & split them
-        re.sub(r'.*tag: ([a-z0-9.]+).*\) (.+)',  r'\1 \2', td).split(' ', 1) for td in set(filter(None, tag_dates))
-    ]
-    sorted_tag_dates = sorted(uniques_tag_dates, key=lambda td: td[1], reverse=True)
+    for tag in repository.tags:
+        tags.setdefault(tag.commit, str(tag))
 
-    changelog_file = os.path.join(path, 'CHANGELOG.md')
-    with open(changelog_file, 'w') as h:
-        for index, td in enumerate(sorted_tag_dates):
-            tag, date = td
-            try:
-                _, date_next = sorted_tag_dates[index+1]
-            except IndexError:
-                date_next = None
+    prev_tag = ""
+    result = ["# Change log"]
 
-            if date_next:
-                messages = git.log('--no-merges',
-                                   '--pretty=" - **%aN**%<|(40)%x3A_%s_"',
-                                   '--since=' + date_next,
-                                   '--until=' + date,
-                                   '--all') \
-                    .replace('"', '') \
-                    .split('\n')
+    add = lambda s: result.append(s)
+    for commit in repository.iter_commits():
+        committed = datetime.datetime.fromtimestamp(commit.committed_date, datetime.timezone.utc)
+        current_tag = tags.get(commit) or ""
+        if current_tag != prev_tag:
+            add("") if result else None
+            add(f"** [{current_tag}] {committed.strftime('%Y-%m-%d')} **")
 
-                # until include message from previous tag
-                messages = messages[:-2]
-            else:
-                # first block
-                messages = git.log('--no-merges',
-                                   '--pretty=" - **%aN**%<|(40)%x3A_%s_"',
-                                   '--until=' + date,
-                                   '--all') \
-                    .replace('"', '') \
-                    .split('\n')
+        add(f"- {commit.author}: {commit.summary}")
 
-                messages = messages[:-1]
+    result = '\n'.join(result)
 
-            if len(messages):
-                h.write("### [{}] - {}\n".format(tag, date.split(' ', 1)[0]))
-
-                h.writelines(map(lambda x: x + '\n', messages))
-                h.write('\n')
-
-    click.echo("Done")
+    with open("CHANGELOG.md", "w+") as h:
+        h.write(result)

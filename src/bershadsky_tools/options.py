@@ -7,6 +7,7 @@ def project_path_callback(ctx, param, value):
     if not value or ctx.resilient_parsing:
         return
     os.chdir(value)
+    return os.getcwd()
 
 
 def version_file_callback(ctx, param, value):

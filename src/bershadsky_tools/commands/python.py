@@ -1,7 +1,3 @@
-import difflib
-import re
-
-import massedit
 import sh
 import os
 import uuid
@@ -11,7 +7,6 @@ import functools
 import threading
 import click_spinner
 
-from bershadsky_tools.commands import version
 from bershadsky_tools.commands.base import b8y
 from bershadsky_tools import options
 
