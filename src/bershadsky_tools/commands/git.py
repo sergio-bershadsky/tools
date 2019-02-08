@@ -82,14 +82,15 @@ def changelog(path, print):
         committed = datetime.datetime.fromtimestamp(commit.committed_date, datetime.timezone.utc)
         current_tag = tags.get(commit) or current_tag
         if current_tag != prev_tag:
-            add("") if result else None
-            add(f"**{current_tag} - {committed.strftime('%Y-%m-%d')}**")
+            # add("") if result else None
+            header_message = f"#### {current_tag} - {committed.strftime('%Y-%m-%d')}"
+            add(header_message)
             prev_tag = current_tag
 
         message = commit.message.strip().replace("\n", " ").replace("  ", " ")
-        add(f"- {commit.author}: {message}")
+        add(f"* {commit.author}: {message}")
 
-    result = '\n'.join(result)
+    result = '\n\n'.join(result)
 
     if print:
         click.echo(result)
