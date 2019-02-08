@@ -1,14 +1,13 @@
-import datetime
 import os
-import re
 import click
+import datetime
 
-from sh import git
 from git import Repo
 
 from bershadsky_tools.commands import version
 from bershadsky_tools.commands.base import b8y
-from bershadsky_tools import options, utils
+from bershadsky_tools import options
+
 
 __all__ = [
     "git_group",
@@ -83,7 +82,7 @@ def changelog(path):
         current_tag = tags.get(commit) or current_tag
         if current_tag != prev_tag:
             add("") if result else None
-            add(f"** [{current_tag}] {committed.strftime('%Y-%m-%d')} **")
+            add(f"**{current_tag} - {committed.strftime('%Y-%m-%d')}**")
             prev_tag = current_tag
 
         add(f"- {commit.author}: {commit.summary}")
