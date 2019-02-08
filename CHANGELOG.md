@@ -1,4 +1,7 @@
 # Change log
+
+** [0.1.3] 2019-02-08 **
+- Sergey Bershadsky: FIX: Changelog
 - Sergey Bershadsky: ADD: git changelog command
 
 ** [0.1.2] 2019-02-08 **

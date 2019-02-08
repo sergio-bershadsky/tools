@@ -73,16 +73,18 @@ def changelog(path):
     for tag in repository.tags:
         tags.setdefault(tag.commit, str(tag))
 
-    prev_tag = click.get_current_context().invoke(version.current, path=path, quiet=True)
+    prev_tag = None
+    current_tag = click.get_current_context().invoke(version.current, path=path, quiet=True)
     result = ["# Change log"]
 
     add = lambda s: result.append(s)
     for commit in repository.iter_commits():
         committed = datetime.datetime.fromtimestamp(commit.committed_date, datetime.timezone.utc)
-        current_tag = tags.get(commit) or prev_tag
+        current_tag = tags.get(commit) or current_tag
         if current_tag != prev_tag:
             add("") if result else None
             add(f"** [{current_tag}] {committed.strftime('%Y-%m-%d')} **")
+            prev_tag = current_tag
 
         add(f"- {commit.author}: {commit.summary}")
 
