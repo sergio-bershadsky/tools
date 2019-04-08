@@ -6,6 +6,13 @@ Here are presented handy commands I use everyday.
 
     pip install git+https://github.com/sergio-bershadsky/tools.git
     
+# Install dev
+    
+    git pull https://github.com/sergio-bershadsky/tools.git
+    source venv/bin/activate
+    cd tools
+    pip install -e . 
+    
 # Quick start
 
  check `b8y --help` command 
