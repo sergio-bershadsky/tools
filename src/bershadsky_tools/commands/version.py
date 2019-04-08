@@ -30,7 +30,7 @@ def version_group(**options):
 @click.option(
     "--version-initial", default="0.0.0"
 )
-def semver_command(bump, prerelease_name, version_file, version_initial, **options):
+def semver_command(bump, prerelease_name, path, version_file, version_initial, **options):
     """
     Bump version to specified level [init, major, minor, patch]
     Other keyword will create pre-release version
@@ -42,7 +42,7 @@ def semver_command(bump, prerelease_name, version_file, version_initial, **optio
     ctx = click.get_current_context()
 
     # Check version file exists
-    current_version = ctx.invoke(current, version_file=version_file, quiet=True)
+    current_version = ctx.invoke(current, path=path, version_file=version_file, quiet=True)
 
     version = current_version or version_initial
     if bump == "major":
@@ -69,9 +69,8 @@ def semver_command(bump, prerelease_name, version_file, version_initial, **optio
 @options.project_path()
 @options.version_file()
 def current(path, version_file, quiet=False):
-    result = None
     if not os.path.exists(version_file):
-        quiet or click.echo(f"Unknown ({version_file} file does not exist)")
+        raise click.ClickException(f"Unknown ({version_file} file does not exist)")
     else:
         with open(version_file) as h:
             result = h.read()

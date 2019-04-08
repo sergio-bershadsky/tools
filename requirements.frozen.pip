@@ -2,8 +2,12 @@ Click==7.0
 click-log==0.3.2
 click-repl==0.1.6
 click-spinner==0.1.8
-prompt-toolkit==2.0.8
+gitdb2==2.0.5
+GitPython==2.1.11
+massedit==0.68.4
+prompt-toolkit==2.0.9
 semver==2.8.1
 sh==1.12.14
 six==1.12.0
+smmap2==2.0.5
 wcwidth==0.1.7
