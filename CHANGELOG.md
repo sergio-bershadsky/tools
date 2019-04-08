@@ -1,5 +1,11 @@
 # Change log
 
+#### 0.1.7 - 2019-04-08
+
+* Sergey Bershadsky: UP: README.md
+
+* Sergey Bershadsky: ADD: setup.py improvements
+
 #### 0.1.6 - 2019-02-08
 
 * Sergey Bershadsky: FIX: changlog foramtting
