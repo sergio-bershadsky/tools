@@ -3,4 +3,4 @@
   description: Automatically bumps version
   entry: b8y version semver
   language: python
-  types: [python]
+  always_run: true
