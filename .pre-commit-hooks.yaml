@@ -2,3 +2,5 @@
   name: bump-sever
   description: Automatically bumps version
   entry: b8y version semver
+  language: python
+  types: [python]
