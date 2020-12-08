@@ -4,3 +4,4 @@
   entry: b8y version semver
   language: python
   always_run: true
+  pass_filenames: false
