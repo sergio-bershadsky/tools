@@ -30,7 +30,10 @@ def version_group(**options):
 @click.option(
     "--version-initial", default="0.0.0"
 )
-def semver_command(bump, prerelease_name, path, version_file, version_initial, **options):
+@click.option(
+    "--no-input", type=bool, default=False, required=False, is_flag=True
+)
+def semver_command(bump, prerelease_name, path, version_file, version_initial, no_input, **options):
     """
     Bump version to specified level [init, major, minor, patch]
     Other keyword will create pre-release version
@@ -58,7 +61,8 @@ def semver_command(bump, prerelease_name, path, version_file, version_initial, *
     if bump != "pre" and prerelease_name:
         version = semver.bump_prerelease(version, prerelease_name)
 
-    click.confirm(f"You are going to bump version \"{version}\", proceed?", default=True, abort=True)
+    if not no_input:
+        click.confirm(f"You are going to bump version \"{version}\", proceed?", default=True, abort=True)
 
     # Write version
     with open(version_file, "w+") as h:
